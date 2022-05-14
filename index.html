@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form id="form">
+    <input type="text" name="first_name" id="first_name" placeholder="First Name">
+    <br>
+    <input type="text" name="last_name" id="last_name" placeholder="Last Name">
+    <br>
+    <input type="text" name="age" id="age" placeholder="Age">
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+<script>
+    function DataBind(formElement) {
+        const form = {};
+
+        formElement.querySelectorAll('input').forEach(function(element) {
+            Object.defineProperty(form, element.name, {
+                get: function() {
+                    return element.value;
+                },
+
+                set: function(value) {
+                    element.value = value;
+                }
+            });
+        });
+
+        return form;
+    }
+
+    const form = DataBind(document.getElementById('form'));
+
+    fetch("data.json").then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        Object.assign(form, data);
+    });
+</script>
+</html>
